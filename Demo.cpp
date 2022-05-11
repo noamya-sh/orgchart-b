@@ -16,8 +16,7 @@ using namespace ariel;
 
 int main() {
   OrgChart organization;
-  organization.add_root("CEO")
-      .add_sub("CEO", "CTO")         // Now the CTO is subordinate to the CEO
+  organization.add_root("CEO").add_sub("CEO", "CTO")         // Now the CTO is subordinate to the CEO
       .add_sub("CEO", "CFO")         // Now the CFO is subordinate to the CEO
       .add_sub("CEO", "COO")         // Now the COO is subordinate to the CEO
       .add_sub("CTO", "VP_SW") // Now the VP Software is subordinate to the CTO
