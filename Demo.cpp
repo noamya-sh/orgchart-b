@@ -11,7 +11,7 @@
 #include <stdexcept>
 using namespace std;
 
-#include "OrgChart.hpp"
+#include "sources/OrgChart.hpp"
 using namespace ariel;
 
 int main() {
@@ -30,7 +30,7 @@ int main() {
        VP_SW             VP_BI
  */
 
-  for (auto it = organization.begin_level_order(); it != organization.end_level_order(); ++it)
+  for (auto it = organization.begin_level_order(); it!= organization.end_level_order(); ++it)
   {
     cout << (*it) << " " ;
   } // prints: CEO CTO CFO COO VP_SW VP_BI
@@ -42,13 +42,13 @@ int main() {
     cout << (*it) << " " ;
   }  // prints: CEO CTO VP_SW CFO COO VP_BI
 
-  for (int element : organization)
+  for (auto element : organization)
   { // this should work like level order
     cout << element << " " ;
   } // prints: CEO CTO CFO COO VP_SW VP_BI
 
   // demonstrate the arrow operator:
-  for (auto it = organization.begin_level_order(); it != organization.end_level_order(); ++it)
+  for (auto it = organization.begin_level_order(); it!=organization.end_level_order(); ++it)
   {
     cout << it->size() << " " ;
   } // prints: 3 3 3 3 5 5
