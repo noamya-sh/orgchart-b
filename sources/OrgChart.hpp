@@ -63,7 +63,7 @@ namespace ariel{
 
             // i++;
             // Usually iterators are passed by value and not by const& as they are small.
-            const iterator operator++(int) {
+            iterator operator++(int) {
                 iterator tmp= *this;
                 pointer_to_current_node= pointer_to_current_node->m_next;
                 return tmp;
@@ -81,7 +81,7 @@ namespace ariel{
             // return &(m_first->m_value);
             return iterator{m_first};
         }
-        int* size() {
+        static int* size() {
             // return nullptr;
             return 0;
         }
