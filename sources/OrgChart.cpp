@@ -1,6 +1,7 @@
 #include "OrgChart.hpp"
 namespace ariel{
     OrgChart& OrgChart::add_root(string s) {
+        m_first = new Node(s, nullptr);
         return *this;
     }
 

@@ -2,6 +2,7 @@
 #define ORGCHART_A_ORGCHART_H
 #include <iostream>
 #include <utility>
+#include <vector>
 using namespace std;
 namespace ariel{
 
@@ -14,16 +15,15 @@ namespace ariel{
                     : m_value(v), m_next(n) {
             }
         };
+
     public:
         OrgChart() : m_first(nullptr) {
         }
-
+        ~OrgChart(){
+            delete m_first;
+        }
         OrgChart& add_root(string s);
-
-
-
         friend ostream &operator<<(ostream &output, const OrgChart &orgChart);
-
         OrgChart& add_sub(string s1, string s2);
         Node* m_first;
 
@@ -33,16 +33,10 @@ namespace ariel{
             Node* current;
 
         public:
-
             iterator(Node* ptr = nullptr)
                     : current(ptr) {
             }
 
-            // Note that the method is const as this operator does not
-            // allow changing of the iterator.
-            // Note that it returns T& as it allows to change what it points to.
-            // A const_iterator class will return const T&
-            // and the method will still be const
             string& operator*() const {
                 //return *current;
                 return current->m_value;
@@ -67,21 +61,24 @@ namespace ariel{
                 return tmp;
             }
 
-            bool operator==(const iterator& rhs) const {
-                return current == rhs.current;
+            bool operator==(const iterator& it) const {
+                return current == it.current;
             }
 
-            bool operator!=(const iterator& rhs) const {
-                return current != rhs.current;
+            bool operator!=(const iterator& it) const {
+                return current != it.current;
+            }
+            size_t size(){
+                return current->m_value.length();
             }
         };  // END OF CLASS ITERATOR
         iterator begin() const {
             // return &(m_first->m_value);
             return iterator{m_first};
         }
-        static int* size() {
-            return 0;
-        }
+//        static int size() {
+//            return 0;
+//        }
         static iterator end() {
             // return nullptr;
             return iterator{nullptr};
