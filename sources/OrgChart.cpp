@@ -12,29 +12,28 @@ namespace ariel{
         return *this;
     }
 
-
-    OrgChart *OrgChart::end_level_order() {
-        return nullptr;
+    OrgChart::iterator OrgChart::begin_level_order() {
+        return OrgChart::iterator();
     }
 
-    OrgChart *OrgChart::begin_preorder() {
-        return nullptr;
+    OrgChart::iterator OrgChart::end_level_order() {
+        return OrgChart::iterator();
     }
 
-    OrgChart *OrgChart::end_preorder() {
-        return nullptr;
+    OrgChart::iterator OrgChart::begin_reverse_order() {
+        return OrgChart::iterator();
     }
 
-    OrgChart *OrgChart::reverse_order() {
-        return nullptr;
+    OrgChart::iterator OrgChart::reverse_order() {
+        return OrgChart::iterator();
     }
 
-    OrgChart *OrgChart::begin_reverse_order() {
-        return nullptr;
+    OrgChart::iterator OrgChart::begin_preorder() {
+        return OrgChart::iterator();
     }
 
-    OrgChart *OrgChart::begin_level_order() {
-        return nullptr;
+    OrgChart::iterator OrgChart::end_preorder() {
+        return OrgChart::iterator();
     }
 }
 
