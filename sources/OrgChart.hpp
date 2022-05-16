@@ -3,7 +3,7 @@
 #include <iostream>
 #include <utility>
 #include <vector>
-
+#include <queue>
 using namespace std;
 namespace ariel{
     enum type_it{
@@ -14,16 +14,14 @@ namespace ariel{
         struct Node {
             string value;
             vector <Node*> boys;
-            Node* father;
-            Node(string &v)
-                    : value(v){
-            }
+            Node* father = nullptr;
         };
-        Node* search(string s);
+
         vector<Node*> toSearch;
 
     public:
-        OrgChart() : root(nullptr) {}
+        Node* search(string s);
+        OrgChart() : root(), last(){}
         ~OrgChart(){
             for (Node *n:toSearch) {
                 delete n;
@@ -33,12 +31,15 @@ namespace ariel{
         friend ostream &operator<<(ostream &output, const OrgChart &orgChart);
         OrgChart& add_sub(string s1, string s2);
         Node* root;
-        void bfs();
+        Node* last;
+
         class iterator {
 
         private:
             Node* current;
             type_it type = LEVEL;
+            queue<Node*> toLevel;
+            Node *nextLevel();
 
         public:
             iterator(type_it t,Node* ptr = nullptr)
@@ -84,14 +85,14 @@ namespace ariel{
                 return current->value.length();
             }
         };  // END OF CLASS ITERATOR
-//        iterator begin() const {
-//            // return &(root->value);
-//            return iterator{LEVEL,root};
-//        }
-//        static iterator end() {
-//            // return nullptr;
-//            return iterator{LEVEL,nullptr};
-//        }
+        iterator begin() {
+            // return &(root->value);
+            return begin_level_order();
+        }
+        iterator end() {
+            // return nullptr;
+            return end_level_order();
+        }
         iterator begin_level_order();
         iterator end_level_order();
         iterator begin_reverse_order();
@@ -99,6 +100,7 @@ namespace ariel{
         iterator begin_preorder();
         iterator end_preorder();
         string get_father(string &boy);
+
     };
 }
 #endif //ORGCHART_A_ORGCHART_H
