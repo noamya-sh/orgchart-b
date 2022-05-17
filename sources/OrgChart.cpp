@@ -3,7 +3,7 @@
 #include <queue>
 namespace ariel{
     OrgChart& OrgChart::add_root(string s) {
-        this->root =new Node();
+        this->root =new Node(s);
         this->root->value = s;
         this->toSearch.push_back(root);
         return *this;
@@ -18,22 +18,22 @@ namespace ariel{
         if (this->root == nullptr){
             throw runtime_error("no exist root");
         }
-        Node *k = search(s1);
-        if (k == nullptr){
+        Node *dad = search(s1);
+        if (dad == nullptr){
             throw runtime_error("no exist father");
         }
-        Node* temp = new Node();
-        temp->value=s2;
-        temp->father = k;
-        temp->height = k->height+1;
-        k->boys.push_back(temp);
+        Node* temp = new Node(s2);
+//        temp->value=s2;
+        temp->father = dad;
+        temp->height = dad->height+1;
+        dad->boys.push_back(temp);
         this->toSearch.push_back(temp);
         return *this;
     }
 
     OrgChart::iterator OrgChart::begin_level_order() {
         iterator it = iterator(LEVEL, this->root);
-        it.toLevel.push(this->root);
+        it.get_toLevel().push(this->root);
         return it;
     }
 
@@ -58,8 +58,8 @@ namespace ariel{
             }
         }
         iterator it = iterator(REVERSE_LEVEL,n);
-        it.idx_reverse = i;
-        it.toReverseLevel = toSearch;
+        it.set_idx_reverse(i);
+        it.set_toReverseLevel(toSearch);
         return it;
     }
 
@@ -86,8 +86,7 @@ namespace ariel{
 //            q.pop();
 //        }
 //    }
-
-    OrgChart::Node *OrgChart::search(string s) {
+    Node *OrgChart::search(string s) {
         for (Node *n: this->toSearch) {
             if (n->value == s){
                 return n;
@@ -107,7 +106,7 @@ namespace ariel{
 //        return n->father->value;
 //    }
 
-    OrgChart::Node *OrgChart::iterator::nextLevel() {
+     Node *OrgChart::iterator::nextLevel() {
 
         for (Node *n:current->boys) {
             toLevel.push(n);
@@ -120,14 +119,14 @@ namespace ariel{
         return n;
     }
 
-    OrgChart::Node *OrgChart::iterator::nextPreorder() {
+    Node *OrgChart::iterator::nextPreorder() {
         if (!this->current->boys.empty()){
             return this->current->boys[0];
         }
         return getUncle(this->current);
     }
 
-    OrgChart::Node *OrgChart::iterator::getUncle(Node *cur) {
+    Node *OrgChart::iterator::getUncle(Node *cur) {
         if (cur->father != nullptr){
             size_t i = 0;
             for (; i < cur->father->boys.size(); ++i) {
@@ -149,16 +148,16 @@ namespace ariel{
             delete n;
         }
     }
-    OrgChart::Node *OrgChart::iterator::nextReverseLevel() {
-        for (size_t i = this->idx_reverse+1; i < toReverseLevel.size(); ++i) {
+    Node *OrgChart::iterator::nextReverseLevel() {
+        for (size_t i = get_idx_reverse()+1; i < toReverseLevel.size(); ++i) {
             if (toReverseLevel[i]->height == this->current->height){
-                this->idx_reverse = i;
+                set_idx_reverse(i);
                 return toReverseLevel[i];
             }
         }
         for (size_t i = 0; i < toReverseLevel.size(); ++i) {
             if (toReverseLevel[i]->height == this->current->height-1){
-                this->idx_reverse =i;
+                set_idx_reverse(i);
                 return toReverseLevel[i];
             }
         }
@@ -185,5 +184,44 @@ namespace ariel{
             return tmp;
     }
 
+    OrgChart::OrgChart(OrgChart &o) {
+        this->root = o.root;
+        this->toSearch = o.toSearch;
+    }
+
+    queue<Node *> OrgChart::iterator::get_toLevel() {
+        return this->toLevel;
+    }
+
+    void OrgChart::iterator::set_idx_reverse(size_t x) {
+        this->idx_reverse = x;
+    }
+
+    size_t OrgChart::iterator::get_idx_reverse() const {
+        return this->idx_reverse;
+    }
+
+
+
+    void OrgChart::iterator::set_toReverseLevel(vector<Node *> vec) {
+        this->toReverseLevel = vec;
+    }
+
+    OrgChart &OrgChart::operator=(const OrgChart &o) {
+        this->root = o.root;
+        this->toSearch = o.toSearch;
+        return *this;
+    }
+
+    OrgChart::OrgChart(OrgChart &&o) noexcept {
+        this->root = o.root;
+        this->toSearch = o.toSearch;
+    }
+
+    OrgChart &OrgChart::operator=(OrgChart &&o) noexcept{
+        this->root = o.root;
+        this->toSearch = o.toSearch;
+        return *this;
+    }
 }
 

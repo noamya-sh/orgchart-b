@@ -9,25 +9,32 @@ namespace ariel{
     enum type_it{
         LEVEL,REVERSE_LEVEL,PREORDER
     };
+    struct Node {
+        string value;
+        vector <Node*> boys;
+        Node* father = nullptr;
+        int height = 0;
+        Node(string &s):value(s){
+        }
+    };
     class OrgChart{
     private:
-        struct Node {
-            string value;
-            vector <Node*> boys;
-            Node* father = nullptr;
-            int height = 0;
-        };
-        vector<Node*> toSearch;
 
+        vector<Node*> toSearch;
+        Node* root;
     public:
 
         Node* search(string s);
         OrgChart();
+        OrgChart(OrgChart &o);
+        OrgChart(OrgChart &&o) noexcept ;
+        OrgChart& operator=(const OrgChart& o);
+        OrgChart& operator=(OrgChart&& o) noexcept;
         ~OrgChart();
         OrgChart& add_root(string s);
         friend ostream &operator<<(ostream &output, const OrgChart &orgChart);
         OrgChart& add_sub(string s1, string s2);
-        Node* root;
+
 
         class iterator {
 
@@ -38,11 +45,15 @@ namespace ariel{
             Node *nextLevel();
             Node *nextPreorder();
             Node *nextReverseLevel();
-        public:
-
             queue<Node*> toLevel;
-            size_t idx_reverse = 0;
             vector<Node*> toReverseLevel;
+            size_t idx_reverse = 0;
+        public:
+            queue<Node*> get_toLevel();
+            void set_toReverseLevel(vector<Node*> vec);
+            void set_idx_reverse(size_t x);
+            size_t get_idx_reverse() const;
+
             iterator(type_it t,Node* ptr = nullptr)
                     : type(t),current(ptr) {
             }
