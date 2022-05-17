@@ -30,26 +30,33 @@ int main() {
        |                 |
        VP_SW             VP_BI
  */
-
+    cout << endl;
     for (auto it = organization.begin_level_order(); it != organization.end_level_order(); ++it)
     {
         cout << (*it) << " " ;
     } // prints: CEO CTO CFO COO VP_SW VP_BI
-    for (auto it = organization.begin_reverse_order(); it != organization.end_reverse_order(); ++it)
+    cout << endl;
+    for (auto it = organization.begin_reverse_order();  it!=organization.end_reverse_order(); ++it)
     {
-        cout << (*it) << " " ;
+        cout << (*it) << " ";
+        //d++;
+        //<< it.current->height <<  " index:" << it.idx_reverse << endl
     } // prints: VP_SW VP_BI CTO CFO COO CEO
+    cout << endl;
     for (auto it=organization.begin_preorder(); it!=organization.end_preorder(); ++it) {
         cout << (*it) << " " ;
     }  // prints: CEO CTO VP_SW CFO COO VP_BI
+    cout << endl;
     for (auto element : organization)
     { // this should work like level order
         cout << element << " " ;
     } // prints: CEO CTO CFO COO VP_SW VP_BI
 
     // demonstrate the arrow operator:
+    cout << endl;
     for (auto it = organization.begin_level_order(); it != organization.end_level_order(); ++it)
     {
         cout << it->size() << " " ;
     } // prints: 3 3 3 3 5 5
+    cout << endl;
 }

@@ -15,11 +15,12 @@ namespace ariel{
             string value;
             vector <Node*> boys;
             Node* father = nullptr;
+            int height = 0;
         };
-
         vector<Node*> toSearch;
 
     public:
+
         Node* search(string s);
         OrgChart();
         ~OrgChart();
@@ -35,13 +36,15 @@ namespace ariel{
             Node* current;
             type_it type = LEVEL;
 
-
         public:
+
             queue<Node*> toLevel;
             Node *nextLevel();
             Node *nextPreorder();
             Node *nextReverseLevel();
             Node *getUncle(Node* cur);
+            size_t idx_reverse = 0;
+            vector<Node*> toSearch2;
             iterator(type_it t,Node* ptr = nullptr)
                     : type(t),current(ptr) {
             }
@@ -55,28 +58,13 @@ namespace ariel{
             }
 
             // ++i;
-            iterator& operator++() {
-                //++current;
-                if (type == LEVEL){
-                    this->current = nextLevel();
-                }
-                else if (type == REVERSE_LEVEL){
-                }
-                else{
-                    this->current = nextPreorder();
-                }
-//                current = current->m_next;
-                return *this;
-            }
+            iterator& operator++();
 
             // i++;
-            // Usually iterators are passed by value and not by const& as they are small.
             iterator operator++(int) {
                 iterator tmp= *this;
-//                current= current->m_next;
                 return tmp;
             }
-
             bool operator==(const iterator& it) const {
                 return current == it.current;
             }
@@ -94,6 +82,7 @@ namespace ariel{
         iterator end() {
             return end_level_order();
         }
+
         iterator begin_level_order();
         iterator end_level_order();
         iterator begin_reverse_order();
