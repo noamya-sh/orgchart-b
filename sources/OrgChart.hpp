@@ -38,10 +38,13 @@ namespace ariel{
         private:
             Node* current;
             type_it type = LEVEL;
-            queue<Node*> toLevel;
-            Node *nextLevel();
+
 
         public:
+            queue<Node*> toLevel;
+            Node *nextLevel();
+            Node *nextPreorder();
+            Node *getUncle(Node* cur);
             iterator(type_it t,Node* ptr = nullptr)
                     : type(t),current(ptr) {
             }
@@ -58,10 +61,14 @@ namespace ariel{
             // ++i;
             iterator& operator++() {
                 //++current;
-                if (type == LEVEL){}
+                if (type == LEVEL){
+                    this->current = nextLevel();
+                }
                 else if (type == REVERSE_LEVEL){
                 }
-                else{}
+                else{
+                    this->current = nextPreorder();
+                }
 //                current = current->m_next;
                 return *this;
             }
