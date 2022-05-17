@@ -6,8 +6,6 @@ namespace ariel{
         this->root =new Node();
         this->root->value = s;
         this->toSearch.push_back(root);
-
-//        cout << this->root->value << endl;
         return *this;
     }
 
@@ -17,6 +15,9 @@ namespace ariel{
     }
 
     OrgChart& OrgChart::add_sub(string s1, string s2) {
+        if (this->root == nullptr){
+            throw runtime_error("no exist root");
+        }
         Node *k = search(s1);
         if (k == nullptr){
             throw runtime_error("no exist father");
@@ -58,12 +59,7 @@ namespace ariel{
         }
         iterator it = iterator(REVERSE_LEVEL,n);
         it.idx_reverse = i;
-//        for (size_t j = 0; j < toSearch.size(); ++j) {
-//            it.toSearch2.push_back(toSearch[j]);
-//        }
-        it.toSearch2 = toSearch;
-//        cout << it.toSearch2.size() << endl;
-//        cout << "begin" << endl;
+        it.toReverseLevel = toSearch;
         return it;
     }
 
@@ -147,23 +143,23 @@ namespace ariel{
             return nullptr;
         }
     }
-    OrgChart::OrgChart() : root(), last(){}
+    OrgChart::OrgChart() : root(){}
     OrgChart::~OrgChart() {
         for (Node *n:toSearch) {
             delete n;
         }
     }
     OrgChart::Node *OrgChart::iterator::nextReverseLevel() {
-        for (size_t i = this->idx_reverse+1; i < toSearch2.size(); ++i) {
-            if (toSearch2[i]->height == this->current->height){
+        for (size_t i = this->idx_reverse+1; i < toReverseLevel.size(); ++i) {
+            if (toReverseLevel[i]->height == this->current->height){
                 this->idx_reverse = i;
-                return toSearch2[i];
+                return toReverseLevel[i];
             }
         }
-        for (size_t i = 0; i < toSearch2.size(); ++i) {
-            if (toSearch2[i]->height == this->current->height-1){
+        for (size_t i = 0; i < toReverseLevel.size(); ++i) {
+            if (toReverseLevel[i]->height == this->current->height-1){
                 this->idx_reverse =i;
-                return toSearch2[i];
+                return toReverseLevel[i];
             }
         }
         return nullptr;
@@ -182,5 +178,12 @@ namespace ariel{
         }
         return *this;
     }
+
+    OrgChart::iterator OrgChart::iterator::operator++(int){
+            iterator tmp= *this;
+            ++*this;
+            return tmp;
+    }
+
 }
 

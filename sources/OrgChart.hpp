@@ -28,61 +28,38 @@ namespace ariel{
         friend ostream &operator<<(ostream &output, const OrgChart &orgChart);
         OrgChart& add_sub(string s1, string s2);
         Node* root;
-        Node* last;
 
         class iterator {
 
         private:
             Node* current;
             type_it type = LEVEL;
-
-        public:
-
-            queue<Node*> toLevel;
+            Node *getUncle(Node* cur);
             Node *nextLevel();
             Node *nextPreorder();
             Node *nextReverseLevel();
-            Node *getUncle(Node* cur);
+        public:
+
+            queue<Node*> toLevel;
             size_t idx_reverse = 0;
-            vector<Node*> toSearch2;
+            vector<Node*> toReverseLevel;
             iterator(type_it t,Node* ptr = nullptr)
                     : type(t),current(ptr) {
             }
 
-            string& operator*() const {
-                return current->value;
-            }
-
-            string* operator->() const {
-                return &(current->value);
-            }
+            string& operator*() const {return current->value;}
+            string* operator->() const {return &(current->value);}
 
             // ++i;
             iterator& operator++();
-
             // i++;
-            iterator operator++(int) {
-                iterator tmp= *this;
-                return tmp;
-            }
-            bool operator==(const iterator& it) const {
-                return current == it.current;
-            }
-
-            bool operator!=(const iterator& it) const {
-                return current != it.current;
-            }
-            size_t size(){
-                return current->value.length();
-            }
+            iterator operator++(int);
+            bool operator==(const iterator& it) const {return current == it.current;}
+            bool operator!=(const iterator& it) const {return current != it.current;}
+            size_t size(){return current->value.length();}
         };  // END OF CLASS ITERATOR
-        iterator begin() {
-            return begin_level_order();
-        }
-        iterator end() {
-            return end_level_order();
-        }
-
+        iterator begin() {return begin_level_order();}
+        iterator end() {return end_level_order();}
         iterator begin_level_order();
         iterator end_level_order();
         iterator begin_reverse_order();
