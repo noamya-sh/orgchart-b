@@ -21,12 +21,8 @@ namespace ariel{
 
     public:
         Node* search(string s);
-        OrgChart() : root(), last(){}
-        ~OrgChart(){
-            for (Node *n:toSearch) {
-                delete n;
-            }
-        }
+        OrgChart();
+        ~OrgChart();
         OrgChart& add_root(string s);
         friend ostream &operator<<(ostream &output, const OrgChart &orgChart);
         OrgChart& add_sub(string s1, string s2);
@@ -44,13 +40,13 @@ namespace ariel{
             queue<Node*> toLevel;
             Node *nextLevel();
             Node *nextPreorder();
+            Node *nextReverseLevel();
             Node *getUncle(Node* cur);
             iterator(type_it t,Node* ptr = nullptr)
                     : type(t),current(ptr) {
             }
 
             string& operator*() const {
-                //return *current;
                 return current->value;
             }
 
@@ -93,11 +89,9 @@ namespace ariel{
             }
         };  // END OF CLASS ITERATOR
         iterator begin() {
-            // return &(root->value);
             return begin_level_order();
         }
         iterator end() {
-            // return nullptr;
             return end_level_order();
         }
         iterator begin_level_order();

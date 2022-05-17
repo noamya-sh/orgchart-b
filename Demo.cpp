@@ -39,11 +39,9 @@ int main() {
     {
         cout << (*it) << " " ;
     } // prints: VP_SW VP_BI CTO CFO COO CEO
-    cout << endl << "PREORDER!!" << endl;
     for (auto it=organization.begin_preorder(); it!=organization.end_preorder(); ++it) {
         cout << (*it) << " " ;
     }  // prints: CEO CTO VP_SW CFO COO VP_BI
-    cout << endl << "END - PREORDER!!" << endl;
     for (auto element : organization)
     { // this should work like level order
         cout << element << " " ;

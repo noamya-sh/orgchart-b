@@ -90,7 +90,6 @@ namespace ariel{
 
     OrgChart::Node *OrgChart::iterator::nextLevel() {
         for (Node *n:current->boys) {
-//            cout << "enter to q:" << n->value << endl;
             toLevel.push(n);
         }
         if (toLevel.empty()){
@@ -98,8 +97,6 @@ namespace ariel{
         }
         toLevel.pop();
         Node *n = toLevel.front();
-//        cout << "return from q:" << n->value<<endl;
-
         return n;
     }
 
@@ -125,6 +122,16 @@ namespace ariel{
         } else {
             return nullptr;
         }
+    }
+    OrgChart::OrgChart() : root(), last(){}
+    OrgChart::~OrgChart() {
+        for (Node *n:toSearch) {
+            delete n;
+        }
+    }
+    OrgChart::Node *OrgChart::iterator::nextReverseLevel() {
+
+        return nullptr;
     }
 }
 
