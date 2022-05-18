@@ -4,13 +4,17 @@
 namespace ariel{
     OrgChart& OrgChart::add_root(string s) {
         this->root =new Node(s);
-        this->root->value = s;
         this->toSearch.push_back(root);
         return *this;
     }
 
     ostream &operator<<(ostream &output, OrgChart &orgChart) {
-        return output;
+        auto it = orgChart.begin_preorder();
+        while (it != orgChart.end_preorder()){
+            output << " ->" << (*it++);
+
+        }
+        return output << endl;
     }
 
     OrgChart& OrgChart::add_sub(string s1, string s2) {
@@ -22,9 +26,9 @@ namespace ariel{
             throw runtime_error("no exist father");
         }
         Node* temp = new Node(s2);
-//        temp->value=s2;
         temp->father = dad;
         temp->height = dad->height+1;
+//        size_t id = find_brother(temp->height);
         dad->boys.push_back(temp);
         this->toSearch.push_back(temp);
         return *this;
@@ -74,17 +78,6 @@ namespace ariel{
         return iterator(PREORDER, nullptr);
     }
 
-//    void OrgChart::bfs() {
-//        vector<string> vec;
-//        queue<Node*> q;
-//        q.push(root);
-//        while (!q.empty()){
-//            Node* n = q.front();
-//            vec.push_back(n->value);
-//            //for: all nodes descents
-//            q.pop();
-//        }
-//    }
     Node *OrgChart::search(string s) {
         for (Node *n: this->toSearch) {
             if (n->value == s){
@@ -108,7 +101,6 @@ namespace ariel{
      Node *OrgChart::iterator::nextLevel() {
 
         for (Node *n:current->boys) {
-//            cout << "PUSH:"  << n->value << endl;
             toLevel.push(n);
         }
         if (toLevel.empty()){
@@ -117,7 +109,6 @@ namespace ariel{
 
         Node *n = toLevel.front();
          toLevel.pop();
-//         cout << "POP:"  << n->value << endl;
         return n;
     }
 
@@ -225,5 +216,15 @@ namespace ariel{
         this->toSearch = o.toSearch;
         return *this;
     }
+
+//    size_t OrgChart::find_brother(unsigned int height) const {
+//        size_t ans = 0;
+//        for (size_t i = 0; i < this->toSearch.size(); ++i) {
+//            if (toSearch[i]->height == height){
+//                ans = i;
+//            }
+//        }
+//        return ans;
+//    }
 }
 

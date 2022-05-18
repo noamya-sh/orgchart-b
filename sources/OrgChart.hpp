@@ -13,7 +13,9 @@ namespace ariel{
         string value;
         vector <Node*> boys;
         Node* father = nullptr;
+        Node* next_brother = nullptr;
         int height = 0;
+        size_t id = 0;
         Node(string &s):value(s){
         }
     };
@@ -21,7 +23,9 @@ namespace ariel{
     private:
 
         vector<Node*> toSearch;
+        vector<Node*> levels;
         Node* root;
+//        size_t find_brother(unsigned int height,Node *dad);
     public:
 
         Node* search(string s);
@@ -69,6 +73,7 @@ namespace ariel{
             bool operator!=(const iterator& it) const {return current != it.current;}
             size_t size(){return current->value.length();}
         };  // END OF CLASS ITERATOR
+
         iterator begin() {return begin_level_order();}
         iterator end() {return end_level_order();}
         iterator begin_level_order();
