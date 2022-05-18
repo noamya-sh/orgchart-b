@@ -32,7 +32,7 @@ namespace ariel{
         OrgChart& operator=(OrgChart&& o) noexcept;
         ~OrgChart();
         OrgChart& add_root(string s);
-        friend ostream &operator<<(ostream &output, const OrgChart &orgChart);
+        friend ostream &operator<<(ostream &output, OrgChart &orgChart);
         OrgChart& add_sub(string s1, string s2);
 
 

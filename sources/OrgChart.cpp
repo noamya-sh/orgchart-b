@@ -9,8 +9,7 @@ namespace ariel{
         return *this;
     }
 
-    ostream &operator<<(ostream &output, const OrgChart &orgChart) {
-
+    ostream &operator<<(ostream &output, OrgChart &orgChart) {
         return output;
     }
 
@@ -109,13 +108,16 @@ namespace ariel{
      Node *OrgChart::iterator::nextLevel() {
 
         for (Node *n:current->boys) {
+//            cout << "PUSH:"  << n->value << endl;
             toLevel.push(n);
         }
         if (toLevel.empty()){
             return nullptr;
         }
-        toLevel.pop();
+
         Node *n = toLevel.front();
+         toLevel.pop();
+//         cout << "POP:"  << n->value << endl;
         return n;
     }
 
