@@ -3,8 +3,13 @@
 //#include <queue>
 namespace ariel{
     OrgChart& OrgChart::add_root(string s) {
-        this->root =new Node(s);
-        this->toSearch.push_back(root);
+        if (this->root != nullptr){
+            this->root->value = s;
+        }
+        else{
+            this->root =new Node(s);
+            this->toSearch.push_back(root);
+        }
         return *this;
     }
 
