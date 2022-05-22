@@ -28,7 +28,7 @@ namespace ariel{
 //        size_t find_brother(unsigned int height,Node *dad);
     public:
 
-        Node* search(string s);
+        Node* search(string const &s);
         OrgChart();
         OrgChart(OrgChart &o) = default;
         OrgChart(OrgChart &&o) = default ;
@@ -37,7 +37,7 @@ namespace ariel{
         ~OrgChart();
         OrgChart& add_root(string s);
         friend ostream &operator<<(ostream &output, OrgChart &orgChart);
-        OrgChart& add_sub(string s1, string s2);
+        OrgChart& add_sub(string const &s1, string s2);
 
 
         class iterator {
@@ -80,7 +80,7 @@ namespace ariel{
         iterator begin_level_order();
         iterator end_level_order();
         iterator begin_reverse_order();
-        iterator end_reverse_order();
+        iterator reverse_order();
         iterator begin_preorder();
         iterator end_preorder();
 //        string get_father(string &boy);
