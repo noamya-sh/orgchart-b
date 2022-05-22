@@ -1,6 +1,6 @@
 #include "OrgChart.hpp"
 #include <iostream>
-#include <queue>
+//#include <queue>
 namespace ariel{
     OrgChart& OrgChart::add_root(string s) {
         this->root =new Node(s);
@@ -46,23 +46,51 @@ namespace ariel{
     }
 
     OrgChart::iterator OrgChart::begin_reverse_order() {
-        int max = -1;
-        Node *n = nullptr;
-        for (size_t i = 0; i < toSearch.size(); ++i) {
-            if (toSearch[i]->height > max){
-                max = toSearch[i]->height;
+//        int max = -1;
+//        Node *n = nullptr;
+//        for (size_t i = 0; i < toSearch.size(); ++i) {
+//            if (toSearch[i]->height > max){
+//                max = toSearch[i]->height;
+//            }
+//        }
+//        size_t i = 0;
+//        for (; i < toSearch.size(); ++i) {
+//            if (toSearch[i]->height == max){
+//                n = toSearch[i];
+//                break;
+//            }
+//        }
+//        iterator it = iterator(REVERSE_LEVEL,n);
+//        it.set_idx_reverse(i);
+//        it.set_toReverseLevel(toSearch);
+
+        iterator it = iterator(REVERSE_LEVEL);
+        vector<Node*> rev;
+        queue<Node*> q;
+        q.push(this->root);
+        vector<Node *> temp;
+        while (!q.empty()){
+            size_t size = q.size();
+            for (int i = 0; i < size; ++i) {
+                Node *n = q.front();
+                q.pop();
+                temp.insert(temp.begin(),n);
+                for (unsigned int j = 0; j < n->boys.size(); ++j) {
+                    q.push(n->boys[j]);
+                }
             }
+                for (Node *n:temp ){
+                    rev.insert(rev.begin(),n);
+                }
+                temp.clear();
         }
-        size_t i = 0;
-        for (; i < toSearch.size(); ++i) {
-            if (toSearch[i]->height == max){
-                n = toSearch[i];
-                break;
-            }
+//        for (unsigned int i = 0; i < rev.size(); ++i) {
+//            cout << i << ": " << rev[i]->value << endl;
+//        }
+        it.set_toReverseLevel(rev);
+        if (!rev.empty()){
+            it.set_cur(rev[0]);
         }
-        iterator it = iterator(REVERSE_LEVEL,n);
-        it.set_idx_reverse(i);
-        it.set_toReverseLevel(toSearch);
         return it;
     }
 
@@ -142,17 +170,29 @@ namespace ariel{
         }
     }
     Node *OrgChart::iterator::nextReverseLevel() {
-        for (size_t i = get_idx_reverse()+1; i < toReverseLevel.size(); ++i) {
-            if (toReverseLevel[i]->height == this->current->height){
-                set_idx_reverse(i);
-                return toReverseLevel[i];
-            }
+//        for (size_t i = get_idx_reverse()+1; i < toReverseLevel.size(); ++i) {
+//            if (toReverseLevel[i]->height == this->current->height){
+//                set_idx_reverse(i);
+//                return toReverseLevel[i];
+//            }
+//        }
+//        for (size_t i = 0; i < toReverseLevel.size(); ++i) {
+//            if (toReverseLevel[i]->height == this->current->height-1){
+//                set_idx_reverse(i);
+//                return toReverseLevel[i];
+//            }
+//        }
+//        cout << "I here" << endl;
+//        for (unsigned int i = 0; i < toReverseLevel.size(); ++i) {
+//            cout << i << ": " << toReverseLevel[i]->value << endl;
+//        }
+        this->idx_reverse++;
+        try{
+//            cout << "yoo" << endl;
+            return this->toReverseLevel[idx_reverse];
         }
-        for (size_t i = 0; i < toReverseLevel.size(); ++i) {
-            if (toReverseLevel[i]->height == this->current->height-1){
-                set_idx_reverse(i);
-                return toReverseLevel[i];
-            }
+        catch(const std::exception& e){
+            return nullptr;
         }
         return nullptr;
     }
@@ -177,10 +217,10 @@ namespace ariel{
             return tmp;
     }
 
-    OrgChart::OrgChart(OrgChart &o) {
-        this->root = o.root;
-        this->toSearch = o.toSearch;
-    }
+//    OrgChart::OrgChart(OrgChart &o) {
+//        this->root = o.root;
+//        this->toSearch = o.toSearch;
+//    }
 
     queue<Node *> OrgChart::iterator::get_toLevel() {
         return this->toLevel;
@@ -200,22 +240,22 @@ namespace ariel{
         this->toReverseLevel = vec;
     }
 
-    OrgChart &OrgChart::operator=(const OrgChart &o) {
-        this->root = o.root;
-        this->toSearch = o.toSearch;
-        return *this;
-    }
-
-    OrgChart::OrgChart(OrgChart &&o) noexcept {
-        this->root = o.root;
-        this->toSearch = o.toSearch;
-    }
-
-    OrgChart &OrgChart::operator=(OrgChart &&o) noexcept{
-        this->root = o.root;
-        this->toSearch = o.toSearch;
-        return *this;
-    }
+//    OrgChart &OrgChart::operator=(const OrgChart &o) {
+//        this->root = o.root;
+//        this->toSearch = o.toSearch;
+//        return *this;
+//    }
+//
+//    OrgChart::OrgChart(OrgChart &&o)  {
+//        this->root = o.root;
+//        this->toSearch = o.toSearch;
+//    }
+//
+//    OrgChart &OrgChart::operator=(OrgChart &&o) {
+//        this->root = o.root;
+//        this->toSearch = o.toSearch;
+//        return *this;
+//    }
 
 //    size_t OrgChart::find_brother(unsigned int height) const {
 //        size_t ans = 0;
@@ -226,5 +266,8 @@ namespace ariel{
 //        }
 //        return ans;
 //    }
+    void OrgChart::iterator::set_cur(Node *n) {
+        this->current = n;
+    }
 }
 

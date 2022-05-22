@@ -30,10 +30,10 @@ namespace ariel{
 
         Node* search(string s);
         OrgChart();
-        OrgChart(OrgChart &o);
-        OrgChart(OrgChart &&o) noexcept ;
-        OrgChart& operator=(const OrgChart& o);
-        OrgChart& operator=(OrgChart&& o) noexcept;
+        OrgChart(OrgChart &o) = default;
+        OrgChart(OrgChart &&o) = default ;
+        OrgChart& operator=(const OrgChart& o) = default;
+        OrgChart& operator=(OrgChart&& o) = default;
         ~OrgChart();
         OrgChart& add_root(string s);
         friend ostream &operator<<(ostream &output, OrgChart &orgChart);
@@ -51,13 +51,14 @@ namespace ariel{
             Node *nextReverseLevel();
             queue<Node*> toLevel;
             vector<Node*> toReverseLevel;
+            vector<Node*> rev;
             size_t idx_reverse = 0;
         public:
             queue<Node*> get_toLevel();
             void set_toReverseLevel(vector<Node*> vec);
             void set_idx_reverse(size_t x);
             size_t get_idx_reverse() const;
-
+            void set_cur(Node *n);
             iterator(type_it t,Node* ptr = nullptr)
                     : type(t),current(ptr) {
             }
@@ -82,7 +83,7 @@ namespace ariel{
         iterator end_reverse_order();
         iterator begin_preorder();
         iterator end_preorder();
-        string get_father(string &boy);
+//        string get_father(string &boy);
 
     };
 }
