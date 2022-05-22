@@ -206,14 +206,11 @@ namespace ariel{
         if (idx_reverse >= toReverseLevel.size()){
             return nullptr;
         }
-        try{
-//            cout << "yoo" << endl;
-            return this->toReverseLevel[idx_reverse];
-        }
-        catch(const std::exception& e){
-            return nullptr;
-        }
-        return nullptr;
+        return this->toReverseLevel[idx_reverse];
+//        catch(const exception& e){
+//            return nullptr;
+//        }
+//        return nullptr;
     }
 
     OrgChart::iterator &OrgChart::iterator::operator++() {
@@ -236,11 +233,6 @@ namespace ariel{
             return tmp;
     }
 
-//    OrgChart::OrgChart(OrgChart &o) {
-//        this->root = o.root;
-//        this->toSearch = o.toSearch;
-//    }
-
     queue<Node *> OrgChart::iterator::get_toLevel() {
         return this->toLevel;
     }
@@ -252,39 +244,10 @@ namespace ariel{
     size_t OrgChart::iterator::get_idx_reverse() const {
         return this->idx_reverse;
     }
-
-
-
     void OrgChart::iterator::set_toReverseLevel(vector<Node *> vec) {
         this->toReverseLevel = move(vec);
     }
 
-//    OrgChart &OrgChart::operator=(const OrgChart &o) {
-//        this->root = o.root;
-//        this->toSearch = o.toSearch;
-//        return *this;
-//    }
-//
-//    OrgChart::OrgChart(OrgChart &&o)  {
-//        this->root = o.root;
-//        this->toSearch = o.toSearch;
-//    }
-//
-//    OrgChart &OrgChart::operator=(OrgChart &&o) {
-//        this->root = o.root;
-//        this->toSearch = o.toSearch;
-//        return *this;
-//    }
-
-//    size_t OrgChart::find_brother(unsigned int height) const {
-//        size_t ans = 0;
-//        for (size_t i = 0; i < this->toSearch.size(); ++i) {
-//            if (toSearch[i]->height == height){
-//                ans = i;
-//            }
-//        }
-//        return ans;
-//    }
     void OrgChart::iterator::set_cur(Node *n) {
         this->current = n;
     }

@@ -51,7 +51,7 @@ namespace ariel{
             Node *nextReverseLevel();
             queue<Node*> toLevel;
             vector<Node*> toReverseLevel;
-            vector<Node*> rev;
+//            vector<Node*> rev;
             size_t idx_reverse = 0;
         public:
             queue<Node*> get_toLevel();
