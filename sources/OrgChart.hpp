@@ -13,9 +13,9 @@ namespace ariel{
         string value;
         vector <Node*> boys;
         Node* father = nullptr;
-        Node* next_brother = nullptr;
-        int height = 0;
-        size_t id = 0;
+//        Node* next_brother = nullptr;
+//        int height = 0;
+//        size_t id = 0;
         Node(string &s):value(s){
         }
     };

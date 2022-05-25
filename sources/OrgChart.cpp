@@ -1,8 +1,11 @@
 #include "OrgChart.hpp"
 #include <iostream>
-//#include <queue>
+
 namespace ariel{
     OrgChart& OrgChart::add_root(string s) {
+        if (s.empty()){
+            throw runtime_error("the root is empty!");
+        }
         if (this->root != nullptr){
             this->root->value = s;
         }
@@ -23,6 +26,9 @@ namespace ariel{
     }
 
     OrgChart& OrgChart::add_sub(string const &s1, string s2) {
+        if (s2.empty()){
+            throw runtime_error("The new child is empty");
+        }
         if (this->root == nullptr){
             throw runtime_error("no exist root");
         }
@@ -32,7 +38,7 @@ namespace ariel{
         }
         Node* temp = new Node(s2);
         temp->father = dad;
-        temp->height = dad->height+1;
+//        temp->height = dad->height+1;
 //        size_t id = find_brother(temp->height);
         dad->boys.push_back(temp);
         this->toSearch.push_back(temp);
