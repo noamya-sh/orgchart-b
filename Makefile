@@ -16,7 +16,10 @@ OBJECTS=$(subst sources/,objects/,$(subst .cpp,.o,$(SOURCES)))
 
 run: test
 
-test: TestRunner.o StudentTest1.o StudentTest2.o StudentTest3.o $(OBJECTS)
+demo: Demo.o $(OBJECTS)
+	$(CXX) $(CXXFLAGS) $^ -o $@
+
+test: TestRunner.o MyTest.o $(OBJECTS)
 	$(CXX) $(CXXFLAGS) $^ -o $@
 
 %.o: %.cpp $(HEADERS)

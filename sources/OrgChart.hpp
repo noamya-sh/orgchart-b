@@ -11,37 +11,31 @@ namespace ariel{
     };
     struct Node {
         string value;
+        int height;
         vector <Node*> boys;
         Node* father = nullptr;
-//        Node* next_brother = nullptr;
-//        int height = 0;
-//        size_t id = 0;
-        Node(string &s):value(s){
-        }
+        Node(string const &s,int h):value(s),height(h){}
     };
     class OrgChart{
     private:
-
         vector<Node*> toSearch;
         vector<Node*> levels;
         Node* root;
-//        size_t find_brother(unsigned int height,Node *dad);
     public:
 
-        Node* search(string const &s);
+        Node* search(const string &s);
         OrgChart();
         OrgChart(OrgChart &o) = default;
         OrgChart(OrgChart &&o) = default ;
         OrgChart& operator=(const OrgChart& o) = default;
         OrgChart& operator=(OrgChart&& o) = default;
         ~OrgChart();
-        OrgChart& add_root(string s);
+        OrgChart& add_root(const string &s);
         friend ostream &operator<<(ostream &output, OrgChart &orgChart);
-        OrgChart& add_sub(string const &s1, string s2);
+        OrgChart& add_sub(const string &s1, const string &s2);
 
 
         class iterator {
-
         private:
             Node* current;
             type_it type = LEVEL;
@@ -54,15 +48,13 @@ namespace ariel{
 //            vector<Node*> rev;
             size_t idx_reverse = 0;
         public:
-            queue<Node*> get_toLevel();
+            int get_height() const{ return this->current->height;};
+            queue<Node*> get_toLevel() const;
             void set_toReverseLevel(vector<Node*> vec);
             void set_idx_reverse(size_t x);
             size_t get_idx_reverse() const;
             void set_cur(Node *n);
-            iterator(type_it t,Node* ptr = nullptr)
-                    : type(t),current(ptr) {
-            }
-
+            iterator(type_it t,Node* ptr = nullptr): type(t),current(ptr) {}
             string& operator*() const {return current->value;}
             string* operator->() const {return &(current->value);}
 
