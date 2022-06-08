@@ -27,24 +27,21 @@ namespace ariel{
     }
 
     ostream &operator<<(ostream &output, OrgChart &orgChart) {
-        int last_level = 0;
+        int level = 0;
+        if (orgChart.root != nullptr){
+            output << level << ":";
+        }
         for (auto it = orgChart.begin(); it != orgChart.end(); ++it)
         {
-            auto cur = it;
-            if (cur.get_height() !=last_level) {
-                output << "\n";
+            auto const &cur = it;
+            if (cur.get_height() !=level) {
+                output << "\n" << cur.get_height() << ":";
             }
-            last_level = cur.get_height();
-            output << " " << *cur << " ";
+            level = cur.get_height();
+            output << " " << *cur;
         }
 
         return output;
-//        auto it = orgChart.begin_preorder();
-//        while (it != orgChart.end_preorder()){
-//            output << " ->" << (*it++);
-//
-//        }
-//        return output << endl;
     }
 
     OrgChart& OrgChart::add_sub(const string &s1, const string &s2) {
@@ -54,14 +51,14 @@ namespace ariel{
             throw runtime_error("no exist root");
         }
         //search the father of new node
-        Node *dad = search(s1);
-        if (dad == nullptr){
+        Node *father = search(s1);
+        if (father == nullptr){
             throw runtime_error("no exist father");
         }
-        Node* temp = new Node(s2,dad->height+1);
-        temp->father = dad;
-        dad->boys.push_back(temp);
-        this->toSearch.push_back(temp);
+        Node* child = new Node(s2,father->height+1);
+        child->father = father;
+        father->boys.push_back(child);
+        this->toSearch.push_back(child);
         return *this;
     }
 
@@ -83,23 +80,6 @@ namespace ariel{
     }
 
     OrgChart::iterator OrgChart::begin_reverse_order() {
-//        int max = -1;
-//        Node *n = nullptr;
-//        for (size_t i = 0; i < toSearch.size(); ++i) {
-//            if (toSearch[i]->height > max){
-//                max = toSearch[i]->height;
-//            }
-//        }
-//        size_t i = 0;
-//        for (; i < toSearch.size(); ++i) {
-//            if (toSearch[i]->height == max){
-//                n = toSearch[i];
-//                break;
-//            }
-//        }
-//        iterator it = iterator(REVERSE_LEVEL,n);
-//        it.set_idx_reverse(i);
-//        it.set_toReverseLevel(toSearch);
         if (this->root == nullptr){
             throw runtime_error("orgchart empty");
         }
@@ -124,7 +104,7 @@ namespace ariel{
                 temp.clear();
         }
         it.set_toReverseLevel(reverse);
-        if (!reverse.empty()){
+        if (!reverse.empty()){ //init current node
             it.set_cur(reverse.at(0));
         }
         return it;
@@ -175,23 +155,28 @@ namespace ariel{
     }
 
     Node *OrgChart::iterator::nextPreorder() {
+        //if exists boys - get first boy
         if (!this->current->boys.empty()){
             return this->current->boys[0];
         }
+        // go to uncle - next
         return getUncle(this->current);
     }
 
     Node *OrgChart::iterator::getUncle(Node *cur) {
         if (cur->father != nullptr){
             size_t i = 0;
+            //find index in boys vector
             for (; i < cur->father->boys.size(); ++i) {
                 if (cur->father->boys.at(i) == cur){
                     break;
                 }
             }
+            // if this last boy
             if (i == cur->father->boys.size()-1){
                 return getUncle(cur->father);
             }
+            // get next boy
             return cur->father->boys.at(i + 1);
         }
         return nullptr;
@@ -203,35 +188,15 @@ namespace ariel{
         }
     }
     Node *OrgChart::iterator::nextReverseLevel() {
-//        for (size_t i = get_idx_reverse()+1; i < toReverseLevel.size(); ++i) {
-//            if (toReverseLevel[i]->height == this->current->height){
-//                set_idx_reverse(i);
-//                return toReverseLevel[i];
-//            }
-//        }
-//        for (size_t i = 0; i < toReverseLevel.size(); ++i) {
-//            if (toReverseLevel[i]->height == this->current->height-1){
-//                set_idx_reverse(i);
-//                return toReverseLevel[i];
-//            }
-//        }
-//        cout << "I here" << endl;
-//        for (unsigned int i = 0; i < toReverseLevel.size(); ++i) {
-//            cout << i << ": " << toReverseLevel[i]->value << endl;
-//        }
         this->idx_reverse++;
         if (idx_reverse >= toReverseLevel.size()){
             return nullptr;
         }
         return this->toReverseLevel.at(idx_reverse);
-//        catch(const exception& e){
-//            return nullptr;
-//        }
-//        return nullptr;
     }
-
+    //++iterator
     OrgChart::iterator &OrgChart::iterator::operator++() {
-        //++current;
+
         if (type == LEVEL){
             this->current = nextLevel();
         }
@@ -243,7 +208,7 @@ namespace ariel{
         }
         return *this;
     }
-
+    //iterator++
     OrgChart::iterator OrgChart::iterator::operator++(int){
             iterator tmp= *this;
             ++*this;

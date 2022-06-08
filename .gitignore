@@ -30,5 +30,5 @@
 *.exe
 *.out
 *.app
-demo
+cmake-build-debug/demo
 test

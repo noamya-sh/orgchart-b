@@ -37,6 +37,7 @@ TEST_CASE("hierarchy - test"){
     }
 TEST_CASE("operators test"){
     OrgChart o1;
+
     string s = "AAA";
     o1.add_root(s).add_sub("AAA","BBB").add_sub("AAA","CCC").add_sub("AAA","DDD");
     auto it = o1.begin_level_order();
