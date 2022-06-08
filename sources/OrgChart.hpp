@@ -18,7 +18,6 @@ namespace ariel{
     };
     class OrgChart{
     private:
-        vector<Node*> toSearch;
         Node* root;
 
     public:

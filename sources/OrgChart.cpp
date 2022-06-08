@@ -2,7 +2,7 @@
 #include <iostream>
 
 namespace ariel{
-    /*Check that the input is correct in the add_root and add_sub functions*/
+    //Check that the input is correct in the add_root and add_sub functions
     void check_arg(const string &s){
         if (s.empty()){
             throw runtime_error("the arg is empty!");
@@ -21,7 +21,6 @@ namespace ariel{
         }
         else{ //if not exist root:
             this->root =new Node(s,0);
-            this->toSearch.push_back(root);
         }
         return *this;
     }
@@ -34,6 +33,7 @@ namespace ariel{
         for (auto it = orgChart.begin(); it != orgChart.end(); ++it)
         {
             auto const &cur = it;
+            // if start new level - add \n
             if (cur.get_height() !=level) {
                 output << "\n" << cur.get_height() << ":";
             }
@@ -58,7 +58,6 @@ namespace ariel{
         Node* child = new Node(s2,father->height+1);
         child->father = father;
         father->boys.push_back(child);
-        this->toSearch.push_back(child);
         return *this;
     }
 
@@ -93,7 +92,9 @@ namespace ariel{
             for (int i = 0; i < size; ++i) {
                 Node *n = q.front();
                 q.pop();
+                // push to index 0
                 temp.insert(temp.begin(),n);
+                //push all boys
                 for (unsigned int j = 0; j < n->boys.size(); ++j) {
                     q.push(n->boys[j]);
                 }
@@ -132,9 +133,16 @@ namespace ariel{
     }
 
     Node *OrgChart::search(string const &s) {
-        for (Node *n: this->toSearch) {
+        queue<Node *> queue;
+        queue.push(root);
+        while(!queue.empty()){
+            Node *n = queue.front();
             if (n->value == s){
                 return n;
+            }
+            queue.pop();
+            for (size_t i = 0; i < n->boys.size(); ++i) {
+                queue.push(n->boys.at(i));
             }
         }
         return nullptr;
@@ -183,7 +191,14 @@ namespace ariel{
     }
     OrgChart::OrgChart() : root(){}
     OrgChart::~OrgChart() {
-        for (Node *n:toSearch) {
+        queue<Node *> queue;
+        queue.push(root);
+        while(!queue.empty()){
+            Node *n = queue.front();
+            queue.pop();
+            for (size_t i = 0; i < n->boys.size(); ++i) {
+                queue.push(n->boys.at(i));
+            }
             delete n;
         }
     }
